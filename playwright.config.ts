@@ -68,3 +68,4 @@ export default defineConfig({
   // },
 });
 // изменения
+// изменения 2
