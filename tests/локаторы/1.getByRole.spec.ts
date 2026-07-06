@@ -38,7 +38,7 @@ test.describe('Поиск элементов форм по ролям', () => {
   // Задание 1: Найди поле "Имя пользователя" по роли textbox и связанному label
   // Заполни поле текстом "тестовый_пользователь" и проверь значение
   test('Найти поля формы по их ролям', async ({ page }) => {
-    const usernameInput = page.locator('[data-todo="usernameInput"]'); // TODO(student): замените на корректный локатор
+    const usernameInput = page.getByLabel('Имя пользователя'); // TODO(student): замените на корректный локатор
     await expect(usernameInput).toBeVisible();
     await usernameInput.fill('тестовый_пользователь');
     await expect(usernameInput).toHaveValue('тестовый_пользователь');
@@ -47,7 +47,7 @@ test.describe('Поиск элементов форм по ролям', () => {
   // Задание 2: Найди чекбокс "Подписаться на рассылку" по роли checkbox
   // Проверь что он не выбран, затем выбери его и проверь снова
   test('Найти чекбоксы по роли checkbox', async ({ page }) => {
-    const newsletterCheckbox = page.locator('[data-todo="newsletterCheckbox"]'); // TODO(student): замените на корректный локатор
+    const newsletterCheckbox = page.getByRole('checkbox', { name: 'Подписаться на рассылку' }); // TODO(student): замените на корректный локатор
     await expect(newsletterCheckbox).toBeVisible();
     await expect(newsletterCheckbox).not.toBeChecked();
     await newsletterCheckbox.check();
@@ -60,9 +60,17 @@ test.describe('Поиск элементов форм по ролям', () => {
   // 3. Найди и выбери страну из выпадающего списка
   // 4. Найди и нажми кнопку отправки
   test('Заполнить и отправить форму', async ({ page }) => {
-    throw new Error(
-      'TODO(student): замените этот блок на поиск полей/кнопки через getByRole и отправку формы',
-    );
+    // 1. Поле имени — textbox с названием label "Имя пользователя"
+    await page.getByRole('textbox', { name: 'Имя пользователя' }).fill('тестовый_пользователь');
+
+    // 2. Поле пароля — тоже textbox, но с названием "Пароль"
+    await page.getByRole('textbox', { name: 'Пароль' }).fill('SuperSecret123');
+
+    // 3. Выпадающий список страны — role="combobox"
+    await page.getByRole('combobox', { name: 'Страна' }).selectOption('ru');
+
+    // 4. Кнопка отправки — role="button" с текстом "Отправить"
+    await page.getByRole('button', { name: 'Отправить' }).click();
   });
 });
 
